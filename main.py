@@ -1,16 +1,30 @@
-# This is a sample Python script.
-
-# Press ⌃R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
 
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌘F8 to toggle the breakpoint.
+
+import json
+import numpy as np
+import pandas as pd
+
+def readfiles(s1, s2):
+    with open (s1) as f:
+        building=json.load(f)
+    for e in building['_elevators']:
+        print(e)
+    print(building)
+    calls=pd.read_csv(s2)
+
+    print(calls.head())
+    print("\n")
+    print("\n")
+    output=pd.read_csv(s2)
+    print(output.head())
+   # for x in output:
+   #     output['0.1']=1;
+   # print(output.head())
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+readfiles("C:/Users/nechd\Desktop\OOP_2021-main\Assignments\Ex1\data\Ex1_input\Ex1_Buildings\B1.json",
+          "C:/Users/nechd\Desktop\OOP_2021-main\Assignments\Ex1\data\Ex1_input\Ex1_Calls\Calls_a.csv")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+
+
