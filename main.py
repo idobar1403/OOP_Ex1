@@ -15,7 +15,7 @@ def readfiles(s1, s2):
 
     print(calls.head())
     print("\n")
-    print("\n")
+
     output=pd.read_csv(s2)
     print(output.head())
    # for x in output:
