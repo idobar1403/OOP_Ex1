@@ -1,6 +1,6 @@
 import json
 import sys
-
+import subprocess
 import numpy as np
 import pandas as pd
 import math
@@ -144,13 +144,15 @@ def readfiles(s1, s2,s3):
         dest= Pairs(x[4], 0.0, 0.0)
         output.loc[x[0],5]=findElev(mybuilding.ElevList, source,dest)
         calls.loc[x[0],5]=output.loc[x[0],5]
-    output.to_csv(r'/Users/idobar/Bsc/Year 2/OOP/Ex1/OOP_Ex1/out.log', header=False)
-   # return output
+    output.to_csv(r'/Users/idobar/Bsc/Year 2/OOP/Ex1/OOP_Ex1/out.csv', index=False, header=False)
+    #return output
 if __name__ == '__main__':
-    with open(sys.argv[0], 'r') as f:
-        build = f.read()
-    with open(sys.argv[1], 'r') as f:
-        calls = f.read()
-    with open(sys.argv[2], 'r') as f:
-        out = f.read()
+
+    # with open(sys.argv[0], 'r') as f:
+    #     build = f.read()
+    # with open(sys.argv[1], 'r') as f:
+    #     calls = f.read()
+    # with open(sys.argv[2], 'r') as f:
+    #     out = f.read()
+    #subprocess.call(['java', '-jar', 'Ex1_checker_V1.2_obf.jar'])
     readfiles(sys.argv[1],sys.argv[2],sys.argv[3])
