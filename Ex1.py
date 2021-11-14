@@ -1,6 +1,7 @@
 import json
 import sys
 import subprocess
+
 import numpy as np
 import pandas as pd
 import math
@@ -154,5 +155,4 @@ if __name__ == '__main__':
     #     calls = f.read()
     # with open(sys.argv[2], 'r') as f:
     #     out = f.read()
-    #subprocess.call(['java', '-jar', 'Ex1_checker_V1.2_obf.jar'])
     readfiles(sys.argv[1],sys.argv[2],sys.argv[3])
