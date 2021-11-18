@@ -65,10 +65,10 @@ Here are our best results rounded up to 1 spot after the decimal:
 
 |   	    | B1     |	B2	| B3   |	B4  |	B5   |
 |---------|--------|------|------|------|------|
-| Calls_a |	113	  | 42.6 |	27.8 |	21 |	15.5 |
-| Calls_b	|		    |      | 522.1 |	183.2 |	35.3 |
-| Calls_c	|		    |      | 541.8 |	186.7 |	35.2 |
-| Calls_d	|		   |       | 506 | 181.2 |	36.4 |
+| Calls_a |	113	  | 41.6 |	26.8 |	20.9 |	12.4 |
+| Calls_b	|		    |      | 481.8 |	171.9 |	35.4 |
+| Calls_c	|		    |      | 491.1 |	172.2 |	35.4 |
+| Calls_d	|		   |       | 480.3 | 179 |	35.6 |
 
 
 For buildings 1, and 2 we only ran calls_a because this is the only csv file with calls that are in the floor range of these buildings. (-2,10)
