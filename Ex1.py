@@ -7,7 +7,6 @@ import pandas as pd
 import math
 
 
-
 class Elevator:
     def __init__(self, Elevator):
         self.id = Elevator['_id']
@@ -21,28 +20,36 @@ class Elevator:
         self.callList = []
 
     def whereAtTime(self, time):
-        if len(self.callList) > 0:
-            if 0 <= time <= (self.callList[0].runTime + self.startTime + self.closeTime):
-                return 0
-            for i in range(1, len(self.callList)):
-                previous_call = self.callList[i-1]
-                current_call = self.callList[i]
-                timeDif = time - (previous_call.runTime + self.startTime + self.closeTime)
-
-                if previous_call.runTime <= time < current_call.runTime:
-                    if previous_call.findTime(current_call, self) < current_call.runTime:
-                        return previous_call.floor
-                    if time > (previous_call.runTime + self.startTime + self.closeTime):
-                        floor_difference = math.ceil(timeDif * self.speed)
-                        if previous_call.floor < current_call.floor:
-                            curr = previous_call.floor + floor_difference
-                        else:
-                            curr = previous_call.floor - floor_difference
-                        return curr
+        close_start = self.startTime + self.closeTime;
+        stop_open = self.stopTime + self.openTime;
+        listlen = len(self.callList)
+        if (listlen==0):
+            return 0
+        if (time < self.callList[0].runTime):  # the time is smaller than the run time of the first call
+            return 0;
+        elif (self.callList[listlen - 1].runTime < time):  # the time is after the last call
+            return self.callList[listlen - 1].floor
+        else:  # the rime is in between calls
+            for i in range(1, listlen):
+                if (time >= self.callList[i - 1].runTime and time <= self.callList[i].runTime):
+                    if (time - close_start <= self.callList[i - 1].runTime):
+                        return self.callList[i - 1].floor
+                    if (time + stop_open >= self.callList[i].runTime):
+                        return self.callList[i].floor
                     else:
-                        return previous_call.floor
-            return self.callList[-1].floor
-
+                        time1 = time - self.callList[
+                            i - 1].runTime - close_start  # time1 is the amount of time from the closest floor to the time we were given
+                        if (self.callList[i - 1].floor < self.callList[i].floor):  # going up
+                            Floor = int(math.ceil(self.callList[i - 1].floor + time1 * self.speed))
+                            if (Floor > self.callList[i].floor):
+                                Floor = self.callList[i].floor
+                            return Floor
+                        else:
+                            # going down
+                            Floor = int(math.ceil(self.callList[i - 1].floor - time1 * self.speed))
+                            if (Floor < self.callList[i].floor):
+                                Floor = self.callList[i].floor
+                            return Floor
 
 class Building:
     def __init__(self, building):
@@ -75,8 +82,10 @@ class Triplet:
             sum += time - p2.minTime
             p2.runTime = time
         return sum
+
     def clone(self):
         return Triplet(self.floor, self.minTime, self.runTime)
+
 
 def findElev(elevators, src, dest):
     if len(elevators) == 1:
@@ -98,7 +107,7 @@ def findElev(elevators, src, dest):
         dest1.runTime = t
         i = 0
         for y in range(1, len(temp)):
-            previous_triplet = temp[y-1]
+            previous_triplet = temp[y - 1]
             current_triplet = temp[y]
             time = previous_triplet.findTime(src1, x)
             if time > src1.runTime:
@@ -110,7 +119,7 @@ def findElev(elevators, src, dest):
         if i > 0:
             j = 0
             for z in range(i + 1, len(temp)):
-                previous_triplet = temp[z-1]
+                previous_triplet = temp[z - 1]
                 current_triplet = temp[z]
                 time = previous_triplet.findTime(dest1, x)
                 if (time > dest1.runTime):
@@ -153,7 +162,7 @@ def readfiles(s1, s2, s3):
         count = count + 1
     try:
         calls = pd.read_csv(s2, header=None)
-        output = pd.read_csv(s3, header=None)
+        output = pd.read_csv(s2, header=None)
     except:
         print("Not csv file")
 
@@ -162,9 +171,8 @@ def readfiles(s1, s2, s3):
         dest = Triplet(x[4], 0, 0)
         output.loc[x[0], 5] = findElev(mybuilding.ElevList, source, dest)
         calls.loc[x[0], 5] = output.loc[x[0], 5]
-    for y in mybuilding.ElevList:
-        print(y.id, " AT ", y.whereAtTime(55))
-    output.to_csv(os.path.join(os.getcwd(), 'out_b.csv'), index=False, header=False)
-    
+    output.to_csv(r''+s3, header=False, index=False)
+
 if __name__ == '__main__':
-    readfiles(sys.argv[1],sys.argv[2],sys.argv[3])
+    print(" please put in a json file csv file and a name for the output file with .csv at the end ")
+    readfiles(sys.argv[1], sys.argv[2], sys.argv[3])
