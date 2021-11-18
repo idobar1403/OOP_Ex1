@@ -59,35 +59,40 @@ class MyTestCase(unittest.TestCase):
         self.assertEqual(trip4.minTime, trip8.minTime)  # add assertion here
 
 
+
+
     def test_whereAtTime(self):
         dict1 = {"_id": 0, "_speed": 5.0, "_minFloor": -0, "_maxFloor": 100, "_closeTime": 1.0,
                      "_openTime": 1.0, "_startTime": 1.0, "_stopTime": 1.0}
 
         Elev1 = Elevator(dict1)
-        trip5 = Triplet(10, 14.25, 14.25)
-        trip7 = Triplet(25, 16.25, 21.25)
-        trip6 = Triplet(30, 22.25, 26.25)
-        trip8 = Triplet(0, 25.25, 36.25)
+
+        trip0 = Triplet(0, 0, 16.25)
+        trip5 = Triplet(10, 14.25,22.25 )
+        trip7 = Triplet(25, 16.25,29.25)
+        trip6 = Triplet(30, 22.25, 34.25)
+        trip8 = Triplet(0, 25.25, 44.25)
+
+        Elev1.callList.append(trip0)
         Elev1.callList.append(trip5)
         Elev1.callList.append(trip7)
         Elev1.callList.append(trip6)
         Elev1.callList.append(trip8)
 
-        floor1=Elev1.whereAtTime(15)
-        floor2 = Elev1.whereAtTime(27)
-        floor3 = Elev1.whereAtTime(23)
-        floor4 = Elev1.whereAtTime(5)
-        floor5 = Elev1.whereAtTime(20)
-        floor6 = Elev1.whereAtTime(18)
-        floor7 = Elev1.whereAtTime(50)
+        floor1 = Elev1.whereAtTime(15) #0
+        floor2 = Elev1.whereAtTime(21.45) #10
+        floor3 = Elev1.whereAtTime(25) # 10-25  14
+        floor4 = Elev1.whereAtTime(40) # 30-0  12
+        floor5 = Elev1.whereAtTime(50) # 0
+        floor6 = Elev1.whereAtTime(30) # 25
 
-        self.assertEqual(10,floor1)
-        self.assertEqual(30, floor2)
-        self.assertEqual(25, floor3)
-        self.assertEqual(10, floor4)
-        self.assertEqual(25, floor5)
-        self.assertEqual(19, floor6)
-        self.assertEqual(0, floor7)
+        self.assertEqual(0,floor1)
+        self.assertEqual(10, floor2)
+        self.assertEqual(14, floor3)
+        self.assertEqual(12, floor4)
+        self.assertEqual(0, floor5)
+        self.assertEqual(25, floor6)
+
 
 
 
