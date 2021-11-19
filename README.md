@@ -12,8 +12,20 @@ Before we started to write code for this project, we looked up similar project d
 3.	https://www.popularmechanics.com/technology/infrastructure/a20986/the-hidden-science-of-elevators/
 4.	https://www.npr.org/templates/story/story.php?storyId=6799860
 ___________________________________________________________________________________________________________________________________________
-To run our code, you will need to import pandas to your python environment if it isn’t installed already. To do so you can run this code to install.
-“pip install pandas”
+## How to run our code in the CMD
+First you will need to make sure that you have java and python downloaded on your computer.
+<br> If they aren't downloaded here are links to download:
+<br> java: https://www.oracle.com/java/technologies/downloads/
+<br> python: https://www.python.org/downloads/
+<br> If they are downladed make sure that you have the pandas library in python on your computer.
+<br> If you arent sure write in the cmd “pip install pandas” and it will install it for you.
+<br> Now that you have everything installed, download the project.
+<br> Open the cmd and navigate in it to the file that you saved the project in.
+<br> next run this line: python Ex1.py Bx.json Calls_y.csv ZZZ.csv
+<br>(x is the json file with building- there are 5 options 1-5, y is the csv file with the calls- there are 4 option a-d, ZZZ is the name of the output)
+<br> next run this line: java -jar Ex1_checker_V1.2_obf.jar 111,222 Bx.json ZZZ.csv AAA.log 
+<br>(Bx needs to be the same file as before, ZZZ nedds to be the same file as before, AAA can be what ever you want)
+____________________________________________________________________________________________________________________________________________________
 
 Our program contains 3 classes:
 
