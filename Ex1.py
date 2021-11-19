@@ -8,6 +8,7 @@ import math
 
 
 class Elevator:
+    # the constructor for the elevator
     def __init__(self, Elevator):
         self.id = Elevator['_id']
         self.speed = Elevator['_speed']
@@ -18,12 +19,12 @@ class Elevator:
         self.startTime = Elevator['_startTime']
         self.stopTime = Elevator['_stopTime']
         self.callList = []
-
+    # this function returns the current floor of the elevator at any given time
     def whereAtTime(self, time):
         close_start = self.startTime + self.closeTime;
         stop_open = self.stopTime + self.openTime;
         listlen = len(self.callList)
-        if (listlen==0):
+        if (listlen == 0):
             return 0
         if (time < self.callList[0].runTime):  # the time is smaller than the run time of the first call
             return 0;
@@ -51,7 +52,9 @@ class Elevator:
                                 Floor = self.callList[i].floor
                             return Floor
 
+
 class Building:
+    # constructor fot building
     def __init__(self, building):
         self.minFloor = building['_minFloor']
         self.maxFloor = building['_maxFloor']
@@ -59,6 +62,7 @@ class Building:
 
 
 class Triplet:
+    # constructor for triplet that holds the floor, the original arriving time and the real arriving time
     def __init__(self, floor, minTime, runTime):
         self.floor = floor
         self.minTime = minTime
@@ -75,7 +79,7 @@ class Triplet:
         return time
 
     def changeTime(self, p2, x):
-        # changes the runTime of the triplet
+        # changes the runTime of the triplet and return the difference between the times
         sum = 0
         time = self.findTime(p2, x)
         if p2.runTime < time:
@@ -84,10 +88,12 @@ class Triplet:
         return sum
 
     def clone(self):
+        # get new object with the same values
         return Triplet(self.floor, self.minTime, self.runTime)
 
-
+# the function returns the best elevator for the given call
 def findElev(elevators, src, dest):
+    # if there is only one elevator it will give all the calls the same elevator
     if len(elevators) == 1:
         return elevators[0].id
     min = sys.maxsize
@@ -97,8 +103,10 @@ def findElev(elevators, src, dest):
         temp = []
         src1 = copy.copy(src)
         dest1 = copy.copy(dest)
+        # the elevators starts at floor 0
         if len(x.callList) == 0:
             x.callList.append(Triplet(0, 0, 0))
+        # creating new list with the same objects as the original
         for i in range(len(x.callList)):
             temp.append(x.callList[i].clone())
         src1.runTime = src1.minTime
@@ -106,6 +114,7 @@ def findElev(elevators, src, dest):
         dest1.minTime = t
         dest1.runTime = t
         i = 0
+        # checking where the source will be in the array
         for y in range(1, len(temp)):
             previous_triplet = temp[y - 1]
             current_triplet = temp[y]
@@ -118,6 +127,7 @@ def findElev(elevators, src, dest):
                     break
         if i > 0:
             j = 0
+            # if the source is in the array we will check the destination place
             for z in range(i + 1, len(temp)):
                 previous_triplet = temp[z - 1]
                 current_triplet = temp[z]
@@ -131,12 +141,15 @@ def findElev(elevators, src, dest):
             if j == 0:
                 temp.append(dest1)
         else:
+            # if the source place is at the end we will add the source and the destination at the end
             temp.append(src1)
             temp.append(dest1)
         temp[0].runTime = temp[1].minTime + x.closeTime + x.startTime
         sum = 0
+        # sum all the changes in time that the source and the destination adds
         for y in range(1, len(temp)):
             sum = sum + temp[y - 1].changeTime(temp[y], x)
+        # check for the min time difference
         if sum < min:
             index = x.id
             place = count
@@ -148,6 +161,7 @@ def findElev(elevators, src, dest):
 
 
 def readfiles(s1, s2, s3):
+    # try to open the json file
     try:
         with open(s1) as f:
             building = json.load(f)
@@ -160,19 +174,21 @@ def readfiles(s1, s2, s3):
         count_e = Elevator(e)
         mybuilding.ElevList.append(count_e)
         count = count + 1
+    # try to open the calls file
     try:
         calls = pd.read_csv(s2, header=None)
         output = pd.read_csv(s2, header=None)
     except:
         print("Not csv file")
-
+    # running over all of the calls and find best elevator for each call
     for x in calls.itertuples():
         source = Triplet(x[3], x[2], x[2])
         dest = Triplet(x[4], 0, 0)
         output.loc[x[0], 5] = findElev(mybuilding.ElevList, source, dest)
         calls.loc[x[0], 5] = output.loc[x[0], 5]
-    output.to_csv(r''+s3, header=False, index=False)
+    output.to_csv(r'' + s3, header=False, index=False)
+
 
 if __name__ == '__main__':
-    print(" please put in a json file csv file and a name for the output file with .csv at the end ")
+    # reading files from user
     readfiles(sys.argv[1], sys.argv[2], sys.argv[3])
